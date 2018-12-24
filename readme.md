@@ -81,6 +81,23 @@ Below you can find the documentation of the CLI parameters used to run the tool.
                             high number can trigger google serving limits!
                             (default: 4)
 
+Here are some command examples
+    
+    gsuite_domain_checker -h
+ This will show the help message
+ 
+     gsuite_domain_checker -d google.com
+ This will check the status of the domain google.com
+
+    gsuite_domain_checker -cf domains.csv
+ This will check the status of all the files in the domains.csv file (one domain per line)
+ 
+     gsuite_domain_checker -cf domains.csv -td jhon.doe@mydomain.com
+ This will check the status of all the files in the domains.csv file (one domain per line) and will write the output in a google spreadsheet shared with jhon.doe@mydomain.com
+ 
+      gsuite_domain_checker -cf domains.csv -of domain_details.csv
+ This will check the status of all the files in the domains.csv file (one domain per line) and will write the output in the domains_details.csv file
+
 ## Author
 I am Lorenzo Persichetti and I work at [Revevol](https://www.revevol.com) helping customers in adopting cloud technologies.
 I personally developed this tool to face complex G Suite deployments in which you need to provision many domins to a single console and you want to be aware if a domain is already part of another console.
