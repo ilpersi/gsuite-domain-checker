@@ -36,7 +36,7 @@ if __name__ == '__main__':
     domains_group.add_argument('-d', '--domains', type=str, nargs='+', help='domains to be checked', metavar='DOMAIN')
 
     # path to the client secret file downloaded from the developer console
-    parser.add_argument('-cs', '--client-secret', type=str, nargs=1, default='client_secret_domain_check.com.json',
+    parser.add_argument('-cs', '--client-secret', type=str, nargs=1, default=['client_secret_domain_check.com.json'],
                         metavar='JSON', help='path to the client secret file exported from the developer console')
 
     # we have to decide where to write the output results
