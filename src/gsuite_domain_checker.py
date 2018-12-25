@@ -5,7 +5,7 @@ from datetime import datetime
 import multiprocessing
 import os
 import pickle
-from sys import exit
+from sys import exit, platform
 import webbrowser
 
 # third parties imports
@@ -25,13 +25,15 @@ def drive_batch_callback(request_id, response, exception):
 
 
 if __name__ == '__main__':
+    if platform.startswith('win'):
+        multiprocessing.freeze_support()
 
     parser = argparse.ArgumentParser(description='Checks domains to see if they belong to a known console.',
                                      formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
     # domains to be checked can be read either from a csv file or from the command line
     domains_group = parser.add_mutually_exclusive_group(required=False)
-    domains_group.add_argument('-cf', '--csv-file', type=str, nargs=1, default='domains_list.csv',
+    domains_group.add_argument('-cf', '--csv-file', type=str, nargs=1, default=['domains_list.csv'],
                                help='a csv file containing a list of domains to be checked')
     domains_group.add_argument('-d', '--domains', type=str, nargs='+', help='domains to be checked', metavar='DOMAIN')
 
@@ -42,7 +44,7 @@ if __name__ == '__main__':
     # we have to decide where to write the output results
     output_group = parser.add_mutually_exclusive_group(required=False)
     # csv output file, we do not use argpars.FileType as we can't pass the newline parameter
-    output_group.add_argument('-of', '--output-file', type=str, nargs=1, default='domain_info.csv',
+    output_group.add_argument('-of', '--output-file', type=str, nargs=1, default=['domain_info.csv'],
                               help='path to a csv file to write extracted information')
     # in as spreadsheet
     output_group.add_argument('-td', '-todrive', type=str, nargs='*', metavar='SHARE',
@@ -271,7 +273,7 @@ if __name__ == '__main__':
             batch.execute()
     # we write a csv file
     else:
-        with open(args.output_file, 'w', newline='') as csvfile:
+        with open(args.output_file[0], 'w', newline='') as csvfile:
             writer = csv.DictWriter(csvfile, fieldnames=fieldnames, delimiter=',')
 
             writer.writeheader()
