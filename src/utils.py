@@ -98,7 +98,7 @@ class DomainChecker:
             customer_info['errorCode'] = error_data['error']['code']
             customer_info['errorMessage'] = error_data['error']['message']
         finally:
-            print("Info: {}".format(customer_info))
+            print("Checked domain: {}".format(self.domain))
 
         return customer_info
 
