@@ -138,7 +138,7 @@ if __name__ == '__main__':
 
     # once we're done we move all the results in a list
     results = []
-    while not domains_info.empty():
+    while not domains_info.empty() or domains_info.qsize() > 0:
         results.append(domains_info.get())
 
     # should we write to drive?
