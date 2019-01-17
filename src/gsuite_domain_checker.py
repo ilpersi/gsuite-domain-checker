@@ -271,6 +271,7 @@ if __name__ == '__main__':
                 ))
 
             batch.execute()
+            print("The spreadsheet has been shared wiht: {}".format(", ".join(args.td)))
     # we write a csv file
     else:
         with open(args.output_file[0], 'w', newline='') as csvfile:
@@ -278,3 +279,5 @@ if __name__ == '__main__':
 
             writer.writeheader()
             writer.writerows(results)
+
+        print("All the domain infos are saved in: {}".format(args.output_file[0]))
