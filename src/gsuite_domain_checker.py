@@ -33,7 +33,7 @@ if __name__ == '__main__':
 
     # domains to be checked can be read either from a csv file or from the command line
     domains_group = parser.add_mutually_exclusive_group(required=False)
-    cf = domains_group.add_argument('-cf', '--csv-file', type=str, nargs=1, default=['domains_list.csv'],
+    domains_group.add_argument('-cf', '--csv-file', type=str, nargs=1, default=['domains_list.csv'],
                                help='a csv file containing a list of domains to be checked')
     domains_group.add_argument('-d', '--domains', type=str, nargs='+', help='domains to be checked', metavar='DOMAIN')
 
@@ -66,11 +66,6 @@ if __name__ == '__main__':
     if not os.path.isfile(args.client_secret[0]):
         sys.tracebacklimit = 0
         raise argparse.ArgumentError(cs, 'file not found')
-
-    # sanity check on csv file
-    if not os.path.isfile(args.csv_file[0]):
-        sys.tracebacklimit = 0
-        raise argparse.ArgumentError(cf, 'file not found')
 
     # queues to manage the parallel processing of domains
     tasks = multiprocessing.JoinableQueue()
