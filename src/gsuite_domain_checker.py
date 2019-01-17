@@ -5,7 +5,7 @@ from datetime import datetime
 import multiprocessing
 import os
 import pickle
-from sys import exit, platform
+import sys
 import webbrowser
 
 # third parties imports
@@ -25,7 +25,7 @@ def drive_batch_callback(request_id, response, exception):
 
 
 if __name__ == '__main__':
-    if platform.startswith('win'):
+    if sys.platform.startswith('win'):
         multiprocessing.freeze_support()
 
     parser = argparse.ArgumentParser(description='Checks domains to see if they belong to a known console.',
@@ -33,12 +33,12 @@ if __name__ == '__main__':
 
     # domains to be checked can be read either from a csv file or from the command line
     domains_group = parser.add_mutually_exclusive_group(required=False)
-    domains_group.add_argument('-cf', '--csv-file', type=str, nargs=1, default=['domains_list.csv'],
+    cf = domains_group.add_argument('-cf', '--csv-file', type=str, nargs=1, default=['domains_list.csv'],
                                help='a csv file containing a list of domains to be checked')
     domains_group.add_argument('-d', '--domains', type=str, nargs='+', help='domains to be checked', metavar='DOMAIN')
 
     # path to the client secret file downloaded from the developer console
-    parser.add_argument('-cs', '--client-secret', type=str, nargs=1, default=['client_secret_domain_check.com.json'],
+    cs = parser.add_argument('-cs', '--client-secret', type=str, nargs=1, default=['client_secret_domain_check.com.json'],
                         metavar='JSON', help='path to the client secret file exported from the developer console')
 
     # we have to decide where to write the output results
@@ -51,7 +51,7 @@ if __name__ == '__main__':
                               help='store the results in a google sheet and share it with one or more account')
 
     # how many parallel process do we want to spawn?
-    parser.add_argument('-pn', '--process-number', type=int, default=4,
+    pn = parser.add_argument('-pn', '--process-number', type=int, default=4,
                         help='number of concurrent processes to spawn; WARNING: an high number can trigger google '
                              'serving limits!')
 
@@ -59,7 +59,18 @@ if __name__ == '__main__':
 
     # sanity check on process numbers
     if args.process_number <= 0:
-        raise argparse.ArgumentError(args.process_number, 'vaule must be bigger than zero!')
+        sys.tracebacklimit = 0
+        raise argparse.ArgumentError(pn, 'vaule must be bigger than zero!')
+
+    # sanity check on client secret
+    if not os.path.isfile(args.client_secret[0]):
+        sys.tracebacklimit = 0
+        raise argparse.ArgumentError(cs, 'file not found')
+
+    # sanity check on csv file
+    if not os.path.isfile(args.csv_file[0]):
+        sys.tracebacklimit = 0
+        raise argparse.ArgumentError(cf, 'file not found')
 
     # queues to manage the parallel processing of domains
     tasks = multiprocessing.JoinableQueue()
@@ -79,7 +90,7 @@ if __name__ == '__main__':
         except FileNotFoundError as e:
             # if we can not open the domain csv file we exit from the program printing the help
             parser.print_help()
-            exit()
+            sys.exit()
     else:
         raise ValueError("Input domains must be provided either with -cf or -d parameters.")
 
@@ -87,7 +98,7 @@ if __name__ == '__main__':
     if not domains:
         print('No domains found!\n\n')
         parser.print_help()
-        exit()
+        sys.exit()
 
     # Scopes
     SCOPES = ['https://www.googleapis.com/auth/drive.file',
