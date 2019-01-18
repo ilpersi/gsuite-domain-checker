@@ -12,11 +12,11 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 
 
 class Consumer(multiprocessing.Process):
-    def __init__(self, task_queue, result_queue, scopes, client_secret):
+    def __init__(self, task_queue, result_list, scopes, client_secret):
         multiprocessing.Process.__init__(self)
 
         self.task_queue = task_queue
-        self.result_queue = result_queue
+        self.result_list = result_list
 
         self._scopes = scopes
         self._client_secret = client_secret
@@ -61,7 +61,7 @@ class Consumer(multiprocessing.Process):
             self.task_queue.task_done()
 
             try:
-                self.result_queue.put(answer)
+                self.result_list.append(answer)
             except Exception as e:
                 print(e)
         return

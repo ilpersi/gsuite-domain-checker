@@ -68,8 +68,9 @@ if __name__ == '__main__':
         raise argparse.ArgumentError(cs, 'file not found')
 
     # queues to manage the parallel processing of domains
+    manager = multiprocessing.Manager()
     tasks = multiprocessing.JoinableQueue()
-    domains_info = multiprocessing.Queue()
+    domains_info = manager.list()
 
     # we want to be sure that domains are initialized, even if empty
     domains = []
@@ -136,11 +137,6 @@ if __name__ == '__main__':
     # Wait for all of the tasks to finish
     tasks.join()
 
-    # once we're done we move all the results in a list
-    results = []
-    while not domains_info.empty() or domains_info.qsize() > 0:
-        results.append(domains_info.get())
-
     # should we write to drive?
     if args.td is not None:
         current_time = datetime.now().strftime("%Y%m%d")
@@ -150,7 +146,7 @@ if __name__ == '__main__':
         plain_data = [fieldnames]
 
         # ... and we normalize the results data
-        for info in results:
+        for info in domains_info:
             sheet_row = [info[key] for key in plain_data[0]]
             plain_data.append(sheet_row)
 
@@ -284,6 +280,6 @@ if __name__ == '__main__':
             writer = csv.DictWriter(csvfile, fieldnames=fieldnames, delimiter=',')
 
             writer.writeheader()
-            writer.writerows(results)
+            writer.writerows(domains_info)
 
         print("All the domain infos are saved in: {}".format(args.output_file[0]))
