@@ -17,6 +17,7 @@ To be able to use this script you need:
 * a Google developer project with the following APIs enabled
   * [G Suite Reseller API](https://developers.google.com/admin-sdk/reseller/v1/get-start/getting-started): these APIs will be used with a __read only__ scope to get information about the domains
   * [Google Drive API](https://developers.google.com/drive/): these APIs are used, based on the parameters, to create Google Spreadsheets used as output for the domains information and to share them with the desired recipients. This will only grant access to files created using gsuite-domain-checker.
+  * [Google Sheets API](https://developers.google.com/sheets/): these APIs are used to interact with sheets holding the output information
 
 ## Important
 This script has only been tested with python 3.6 so I strongly recommend to use that version of the python interpreter or a following one.
