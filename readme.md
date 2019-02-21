@@ -101,7 +101,7 @@ Here are some command examples
 
 ## Author
 I am Lorenzo Persichetti and I work at [Revevol](https://www.revevol.com) helping customers in adopting cloud technologies.
-I personally developed this tool to face complex G Suite deployments in which you need to provision many domins to a single console and you want to be aware if a domain is already part of another console.
+I personally developed this tool to face complex G Suite deployments in which you need to provision many domains to a single console and you want to be aware if a domain is already part of another console.
 
 I have used this tool many times and it proved to be a useful companion in the early stages of a G Suite deployment and that is why I am now sharing it as an open source tool.
 
