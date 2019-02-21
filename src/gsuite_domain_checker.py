@@ -153,9 +153,7 @@ if __name__ == '__main__':
         # creation parameters for the spreadsheet
         create_body = {
             'properties': {
-                'title': '[INTERNAL][Revevol][{}] G Suite Deployment - Domains Checker - EN'.format(current_time),
-                'locale': 'it_IT',
-                'timeZone': 'Europe/Rome'
+                'title': '[{}] Domains Checker - EN'.format(current_time),
             },
             'sheets': [
                 {
